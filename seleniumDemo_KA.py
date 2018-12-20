@@ -4,8 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
+import time
 
 
 driverPath = '/Users/ishratahmed/Documents/Supplementary Resources/PySeleniumDemo/chromedriver'
@@ -20,15 +19,19 @@ browser.get(url)
 #print(browser.current_url) #prints the url
 #print(browser.page_source) #prints the page source
 
-
-
-#https://stackoverflow.com/questions/49939123/scrape-dynamic-contents-created-by-javascript-using-python
+#reference:
+# https://stackoverflow.com/questions/39112138/use-selenium-to-click-a-load-more-button-until-it-doesnt-exist-youtube
+# https://stackoverflow.com/questions/49939123/scrape-dynamic-contents-created-by-javascript-using-python
+# https://stackoverflow.com/questions/11908249/debugging-element-is-not-clickable-at-point-error
 try:
 
-    for _ in range(5):  # Adjust this range according to the number of how far we wanna go down.
+    for _ in range(5):  # Adjust this range according to the number of how far we wanna go down (i.e., number of times show more is clicked).
         WebDriverWait(browser, delay).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, loadMoreBtnSelector))).click()
+        time.sleep(2)
         print("MORE button clicked")
+        time.sleep(5) #attempts to click the button too early upon page refresh, as a result raises exception. so added timer.
+
 
     WebDriverWait(browser, delay).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, selector))
