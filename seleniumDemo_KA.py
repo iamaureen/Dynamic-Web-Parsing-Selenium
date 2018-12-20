@@ -24,7 +24,11 @@ browser.get(url)
 
 #https://stackoverflow.com/questions/49939123/scrape-dynamic-contents-created-by-javascript-using-python
 try:
-   
+
+    for _ in range(5):  # Adjust this range according to the number of how far we wanna go down.
+        WebDriverWait(browser, delay).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, loadMoreBtnSelector))).click()
+        print("MORE button clicked")
 
     WebDriverWait(browser, delay).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, selector))
